@@ -130,10 +130,3 @@ Both of these bit this template during setup — worth knowing before you debug 
   build error (`Next.js encountered the unstable value`). If you need one, mark the component or
   function with `"use cache"` — see `components/site-footer.tsx` — or use `"use client"` to compute
   it in the browser.
-
-## Not done yet
-
-- Real page designs (this is a blank shell).
-- A mobile nav drawer — the current nav wraps onto extra rows at narrow widths.
-- Sitemap/robots, analytics, and a redirect map from the old URLs.
-- Anything involving a server: there are no API routes, no database, no auth in this template.
