@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ubccsss.org — React rewrite
 
-## Getting Started
+Blank starter for the next [ubccsss.org](https://ubccsss.org), replacing the Hugo site.
 
-First, run the development server:
+This repo is **scaffolding only**: the shell, design tokens and tooling are set up, and every page
+still has to be built. Nothing here is final design — it exists so the first page can be written
+without a yak-shave.
+
+## Stack
+
+| Concern   | Choice                                                                   |
+| --------- | ------------------------------------------------------------------------ |
+| Framework | Next.js 16 (App Router, Turbopack)                                       |
+| Language  | TypeScript (strict)                                                      |
+| Styling   | Tailwind CSS v4 — tokens declared in `app/globals.css` via `@theme`      |
+| Fonts     | `next/font/google` — Montserrat (display) + Poppins (body), self-hosted  |
+| Linting   | ESLint (`eslint-config-next`, core-web-vitals + TypeScript)               |
+| Hosting   | Netlify (auto-detected Next.js runtime)                                  |
+| Node      | 24 (see `.nvmrc`)                                                        |
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+nvm use            # or any Node 24
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Other scripts:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build      # production build
+npm run start      # serve the production build
+npm run lint       # ESLint
+npm run typecheck  # tsc --noEmit
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+```
+app/
+  layout.tsx        root layout — fonts, metadata, header/footer
+  page.tsx          placeholder home (delete when the real one lands)
+  not-found.tsx     404
+  globals.css       design tokens + base styles
+  icon.svg          favicon (CSSS cube mark)
+components/
+  site-header.tsx   nav shell
+  site-footer.tsx   footer shell
+lib/
+  site.ts           site identity + navigation
+public/brand/       CSSS logo assets (copied from the Hugo site)
+netlify.toml        build settings
+.github/workflows/  CI: lint + typecheck + build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Design system
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Colours and fonts come from the **CSSS Branding Guide** and are declared once, in `app/globals.css`,
+as Tailwind v4 theme tokens. Use the generated utilities — never a raw hex value in a component.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Token               | Utility examples          | Hex       |
+| ------------------- | ------------------------- | --------- |
+| `--color-navy`      | `bg-navy` `text-navy`     | `#061D80` |
+| `--color-navy-deep` | `bg-navy-deep`            | `#08327B` |
+| `--color-blue-deep` | `bg-blue-deep`            | `#0F4996` |
+| `--color-blue`      | `text-blue` `bg-blue`     | `#3A76DB` |
+| `--color-blue-alt`  | `bg-blue-alt`             | `#387DD0` |
+| `--color-sky`       | `bg-sky` `text-sky`       | `#B1D4FF` |
+| `--color-ink`       | `text-ink` `text-ink/70`  | `#1C2333` |
+| `--color-paper`     | `bg-paper`                | `#EEF3FC` |
 
-## Deploy on Vercel
+Type:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `font-display` → Montserrat — headings, buttons and section labels. Section labels are uppercase
+  with wide tracking (`uppercase tracking-[0.18em]`).
+- `font-sans` → Poppins — body copy (default).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Notes:
+
+- **Dark mode is intentionally not wired up.** The previous setup leaned on `prefers-color-scheme`
+  inversion, which fights a brand palette. If we want a dark theme, it needs a deliberate pass.
+- The shell is a light `paper` background with a navy header/footer. That is a starting point, not a
+  design decision — page designs are still open.
+
+## Conventions
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md). The short version: server components by default, colours
+only through tokens, `metadata` on every page, small reviewed PRs against a protected `main`.
+
+## Deploying to Netlify
+
+Netlify detects Next.js and runs its own Next.js runtime — **no plugin to install**. `netlify.toml`
+only pins the build command (`npm run build`), the output directory (`.next`) and `NODE_VERSION`.
+
+To stand up a new site:
+
+1. Netlify → *Add new site* → *Import an existing project* → pick this repo.
+2. Accept the detected build settings (they match `netlify.toml`).
+3. Deploy. The preview URL from a PR is the review surface for design work.
+
+DNS cutover from the current Hugo site is a separate, deliberate step — don't point `ubccsss.org`
+at this until the rewrite is actually ready.
+
+## Migration notes (from Hugo)
+
+- **This repo is a template, not a migration.** Pages need to be rebuilt one at a time.
+- **Content is not here.** The Hugo site's `content/` markdown, page bundles and images still live in
+  [ubccsss/ubccsss.org](https://github.com/ubccsss/ubccsss.org). Port content page by page, pulling
+  only the assets each page actually uses.
+- **URLs should stay stable.** `lib/site.ts` mirrors the current Hugo menu
+  (`config/_default/menu.yml`), so routes line up with the URLs already in the wild. Keep it that
+  way — `ubccsss.org/services/courses/` should not become `/courses`.
+- **Two Hugo features need rethinking rather than porting:**
+  - the course reviews page, which posts to a Cloudflare Worker (`course-review-worker`) — keep the
+    worker, re-point the form;
+  - the sponsorship enquiry form, which is a `mailto:` link with no backend. Don't imply submissions
+    are stored unless a backend is actually added.
+
+## Not done yet
+
+- Real page designs (this is a blank shell).
+- A mobile nav drawer — the current nav wraps onto extra rows at narrow widths.
+- Sitemap/robots, analytics, and a redirect map from the old URLs.
+- Anything involving a server: there are no API routes, no database, no auth in this template.

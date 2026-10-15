@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# Netlify detects Next.js automatically and runs its own Next.js runtime, so
+# there is no plugin to install. This file only pins the build command, output
+# directory and Node major version. See README.md for deployment notes.

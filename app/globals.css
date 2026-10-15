@@ -1,26 +1,39 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==================================================================
+   UBC CSSS design tokens
+   ------------------------------------------------------------------
+   Source of truth for colour + type. Colours come from the CSSS
+   Branding Guide; anything visual should use the Tailwind utilities
+   these tokens generate (bg-navy, text-sky, font-display, ...) rather
+   than hard-coded hex values in components.
+
+   Brand ramp (navy -> light blue) is meant for section fills, header
+   bands and gradient washes. `ink` and `paper` are the neutrals.
+   ================================================================== */
+@theme {
+  --color-navy: #061d80;
+  --color-navy-deep: #08327b;
+  --color-blue-deep: #0f4996;
+  --color-blue: #3a76db;
+  --color-blue-alt: #387dd0;
+  --color-sky: #b1d4ff;
+
+  --color-ink: #1c2333;
+  --color-paper: #eef3fc;
+
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
 }
