@@ -117,6 +117,20 @@ at this until the rewrite is actually ready.
   - the sponsorship enquiry form, which is a `mailto:` link with no backend. Don't imply submissions
     are stored unless a backend is actually added.
 
+## Next 16 gotchas
+
+Both of these bit this template during setup — worth knowing before you debug your own PR.
+
+- **`tsc` alone fails on a fresh clone.** `LayoutProps<"/">` (used in `app/layout.tsx`) is an
+  ambient type that Next *generates* into `.next/`. On a clean checkout that directory doesn't
+  exist yet, so a bare `tsc --noEmit` errors with `Cannot find name 'LayoutProps'`. That's why
+  `npm run typecheck` is `next typegen && tsc --noEmit` — keep the `typegen` step.
+- **Cache Components blocks unstable values during prerender.** This repo has `cacheComponents`
+  enabled, so calling `new Date()`, `Math.random()` etc. while a page is being prerendered is a
+  build error (`Next.js encountered the unstable value`). If you need one, mark the component or
+  function with `"use cache"` — see `components/site-footer.tsx` — or use `"use client"` to compute
+  it in the browser.
+
 ## Not done yet
 
 - Real page designs (this is a blank shell).
