@@ -11,11 +11,10 @@ without a yak-shave.
 | Concern   | Choice                                                                   |
 | --------- | ------------------------------------------------------------------------ |
 | Framework | Next.js 16 (App Router, Turbopack)                                       |
-| Language  | TypeScript (strict)                                                      |
+| Language  | TypeScript. We can change this to JS as well                             |
 | Styling   | Tailwind CSS v4 — tokens declared in `app/globals.css` via `@theme`      |
-| Fonts     | `next/font/google` — Montserrat (display) + Poppins (body), self-hosted  |
-| Linting   | ESLint (`eslint-config-next`, core-web-vitals + TypeScript)               |
-| Hosting   | Netlify (auto-detected Next.js runtime)                                  |
+| Linting   | ESLint                                                                   |
+| Hosting   | Netlify                                                                  |
 | Node      | 24 (see `.nvmrc`)                                                        |
 
 ## Getting started
@@ -57,7 +56,7 @@ netlify.toml        build settings
 ## Design system
 
 Colours and fonts come from the **CSSS Branding Guide** and are declared once, in `app/globals.css`,
-as Tailwind v4 theme tokens. Use the generated utilities — never a raw hex value in a component.
+as Tailwind v4 theme tokens. Use the generated utilities and add them as needed.
 
 | Token               | Utility examples          | Hex       |
 | ------------------- | ------------------------- | --------- |
@@ -69,19 +68,6 @@ as Tailwind v4 theme tokens. Use the generated utilities — never a raw hex val
 | `--color-sky`       | `bg-sky` `text-sky`       | `#B1D4FF` |
 | `--color-ink`       | `text-ink` `text-ink/70`  | `#1C2333` |
 | `--color-paper`     | `bg-paper`                | `#EEF3FC` |
-
-Type:
-
-- `font-display` → Montserrat — headings, buttons and section labels. Section labels are uppercase
-  with wide tracking (`uppercase tracking-[0.18em]`).
-- `font-sans` → Poppins — body copy (default).
-
-Notes:
-
-- **Dark mode is intentionally not wired up.** The previous setup leaned on `prefers-color-scheme`
-  inversion, which fights a brand palette. If we want a dark theme, it needs a deliberate pass.
-- The shell is a light `paper` background with a navy header/footer. That is a starting point, not a
-  design decision — page designs are still open.
 
 ## Conventions
 
@@ -146,17 +132,3 @@ When this is ready to replace the current site, undo the staging bits:
     worker, re-point the form;
   - the sponsorship enquiry form, which is a `mailto:` link with no backend. Don't imply submissions
     are stored unless a backend is actually added.
-
-## Next 16 gotchas
-
-Both of these bit this template during setup — worth knowing before you debug your own PR.
-
-- **`tsc` alone fails on a fresh clone.** `LayoutProps<"/">` (used in `app/layout.tsx`) is an
-  ambient type that Next *generates* into `.next/`. On a clean checkout that directory doesn't
-  exist yet, so a bare `tsc --noEmit` errors with `Cannot find name 'LayoutProps'`. That's why
-  `npm run typecheck` is `next typegen && tsc --noEmit` — keep the `typegen` step.
-- **Cache Components blocks unstable values during prerender.** This repo has `cacheComponents`
-  enabled, so calling `new Date()`, `Math.random()` etc. while a page is being prerendered is a
-  build error (`Next.js encountered the unstable value`). If you need one, mark the component or
-  function with `"use cache"` — see `components/site-footer.tsx` — or use `"use client"` to compute
-  it in the browser.
