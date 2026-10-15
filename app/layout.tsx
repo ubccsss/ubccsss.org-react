@@ -32,6 +32,13 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description: site.description,
+  // STAGING ONLY — delete this when the rewrite goes live for real. The
+  // preview deploy sits under the real domain, so it must not be indexed
+  // alongside the current site. See app/robots.ts for the full checklist.
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     type: "website",
     siteName: site.name,
