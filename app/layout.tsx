@@ -33,8 +33,8 @@ export const metadata: Metadata = {
   },
   description: site.description,
   // STAGING ONLY — delete this when the rewrite goes live for real. The
-  // preview deploy sits under the real domain, so it must not be indexed
-  // alongside the current site. See app/robots.ts for the full checklist.
+  // staging site must not be indexed alongside the real ubccsss.org. See
+  // app/robots.ts for the full removal checklist.
   robots: {
     index: false,
     follow: false,

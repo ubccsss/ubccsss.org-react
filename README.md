@@ -93,16 +93,18 @@ only through tokens, `metadata` on every page, small reviewed PRs against a prot
 This repo deploys as its **own standalone site** — it is not connected to ubccsss.org and cannot
 break it. The aim is a URL webmasters can look at while the rewrite is being built.
 
-Netlify is the host because the society already uses it and it needs no infrastructure work:
+**Staging URL: <https://csss-2.netlify.app/>**
 
-- **Netlify → _Add new site_ → _Import an existing project_ → pick this repo.** The build settings
-  are auto-detected, and `netlify.toml` pins the same values (`npm run build`, `.next`, Node 24).
-  Netlify runs its own Next.js runtime, so there is **no plugin to install**.
-- **Push to `main` → automatic deploy.** Nobody has to run a deploy command.
-- **Every PR gets its own deploy preview URL**, which is the review surface for design work — and
-  it means a change can be looked at before it lands on the main staging URL.
-- The site name you pick becomes the URL (`<name>.netlify.app`, globally unique on Netlify). Use
-  something obviously staging, e.g. `ubccsss-next`.
+Netlify is the host because the society already uses it and it needs no infrastructure work. Keep
+the site linked to this repo so that:
+
+- **pushes to `main` deploy automatically** — nobody runs a deploy command;
+- **every PR gets its own deploy preview URL**, which is the review surface for design work, so a
+  change can be looked at before it reaches the staging URL.
+
+The build settings are pinned in `netlify.toml` (`npm run build`, `.next`, Node 24) and match what
+Netlify auto-detects. Netlify runs its own Next.js runtime, so there is **no plugin to install**.
+The Netlify site name is what forms the URL, and those names are globally unique on Netlify.
 
 ### Noindex while this is staging
 
