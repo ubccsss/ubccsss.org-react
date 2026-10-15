@@ -88,19 +88,49 @@ Notes:
 See [CONTRIBUTING.md](./CONTRIBUTING.md). The short version: server components by default, colours
 only through tokens, `metadata` on every page, small reviewed PRs against a protected `main`.
 
-## Deploying to Netlify
+## Deploying (staging)
 
-Netlify detects Next.js and runs its own Next.js runtime — **no plugin to install**. `netlify.toml`
-only pins the build command (`npm run build`), the output directory (`.next`) and `NODE_VERSION`.
+This repo deploys as its **own standalone site** — it is not connected to ubccsss.org and cannot
+break it. The aim is a URL webmasters can look at while the rewrite is being built.
 
-To stand up a new site:
+**Staging URL: <https://csss-2.netlify.app/>**
 
-1. Netlify → *Add new site* → *Import an existing project* → pick this repo.
-2. Accept the detected build settings (they match `netlify.toml`).
-3. Deploy. The preview URL from a PR is the review surface for design work.
+Netlify is the host because the society already uses it and it needs no infrastructure work. Keep
+the site linked to this repo so that:
 
-DNS cutover from the current Hugo site is a separate, deliberate step — don't point `ubccsss.org`
-at this until the rewrite is actually ready.
+- **pushes to `main` deploy automatically** — nobody runs a deploy command;
+- **every PR gets its own deploy preview URL**, which is the review surface for design work, so a
+  change can be looked at before it reaches the staging URL.
+
+The build settings are pinned in `netlify.toml` (`npm run build`, `.next`, Node 24) and match what
+Netlify auto-detects. Netlify runs its own Next.js runtime, so there is **no plugin to install**.
+The Netlify site name is what forms the URL, and those names are globally unique on Netlify.
+
+### Noindex while this is staging
+
+A blank template under CSSS branding must not end up in Google alongside the real site, so
+**three** noindex signals are in place, and all three are commented as staging-only:
+
+| Layer | Where |
+| --- | --- |
+| `robots.txt` route (`Disallow: /`) | `app/robots.ts` |
+| `<meta name="robots" content="noindex, nofollow">` | `metadata.robots` in `app/layout.tsx` |
+| `X-Robots-Tag: noindex, nofollow, noarchive` | `[[headers]]` in `netlify.toml` |
+
+`disallow` stops crawling, `noindex` stops an already-known URL being listed — hence both rather
+than picking one.
+
+### Going live later
+
+When this is ready to replace the current site, undo the staging bits:
+
+1. delete `app/robots.ts`
+2. remove the `robots` field from `metadata` in `app/layout.tsx`
+3. remove the `[[headers]]` block from `netlify.toml`
+4. add `ubccsss.org` as a custom domain on the Netlify site (the DNS cutover from the Hugo site is
+   a separate, deliberate step — the zone is on Cloudflare, so whoever holds that account has to
+   make the change)
+
 
 ## Migration notes (from Hugo)
 

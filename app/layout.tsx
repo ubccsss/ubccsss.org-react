@@ -32,6 +32,13 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description: site.description,
+  // STAGING ONLY — delete this when the rewrite goes live for real. The
+  // staging site must not be indexed alongside the real ubccsss.org. See
+  // app/robots.ts for the full removal checklist.
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     type: "website",
     siteName: site.name,

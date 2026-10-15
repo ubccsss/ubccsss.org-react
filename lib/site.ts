@@ -12,6 +12,9 @@ export const site = {
   title: "UBC Computer Science Student Society",
   description:
     "The UBC Computer Science Student Society (CSSS) is the student-run society for Computer Science students at the University of British Columbia.",
+  // The eventual production home, used for canonical/OG URLs. While this is
+  // still a staging deploy on someone.netlify.app, the noindex layers keep the
+  // mismatch from mattering. Update this when the rewrite actually moves.
   url: "https://ubccsss.org",
 } as const;
 
