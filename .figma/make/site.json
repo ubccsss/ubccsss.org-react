@@ -1,0 +1,10 @@
+{
+  "description": "A continuous-scroll landing page for a university student society, showcasing its brand, activities, and interactive features to help students explore and get involved.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
