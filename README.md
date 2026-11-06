@@ -1,4 +1,6 @@
-This branch is for inspiration only. **Do not merge into main.**
+**Do not merge into main.** This branch is for design inspiration only. 
+
+This code was generated with Figma Make, it has not been thoroughly reviewed.
 
 ## Getting started
 
