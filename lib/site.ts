@@ -20,16 +20,55 @@ export const site = {
 
 export type NavItem = {
   label: string;
-  href: string;
+  subMenu?: NavSubItem[];
+  href?: string;
 };
+
+export type NavSubItem = {
+  label: string;
+  href: string;
+}
 
 export const mainNav: NavItem[] = [
   { label: "About", href: "/about" },
-  { label: "Sponsorship", href: "/about/partners" },
-  { label: "The Cube", href: "/cube" },
-  { label: "Services", href: "/services" },
-  { label: "Course Reviews", href: "/services/courses" },
+  { label: "Sponsors", href: "/about/partners" },
+  { 
+    label: "Services", 
+    subMenu: [
+      {
+        label: "The Cube",
+        href: "/cube"
+      },
+      {
+        label: "Course Reviews",
+        href: "/course-reviews"
+      },
+      {
+        label: "Locker Rentals",
+        href: "/locker-rentals"
+      },
+      {
+        label: "Tutoring",
+        href: "/tutoring"
+      }
+    ], 
+    href: "/services" 
+  },
+  {
+    label: "Get Involved",
+    subMenu: [
+      {
+        label: "Events",
+        href: "/events"
+      },
+      {
+        label: "Volunteer",
+        href: "/volunteer"
+      }
+    ]
+  },
   { label: "Technical Career Fair", href: "/tcf" },
+  { label: "Research Conference", href: "/conference" },
   { label: "Contact", href: "/contact" },
 ];
 

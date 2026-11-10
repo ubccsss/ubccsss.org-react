@@ -22,15 +22,30 @@ export function SiteHeader() {
         </Link>
 
         <nav aria-label="Main" className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-          {mainNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sky transition-colors hover:text-white"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {mainNav.map((item) =>
+            item.subMenu ? (
+              <div key={item.label} className="group relative">
+                <button className="flex items-center gap-1 text-sky transition-colors group-hover:text-white">
+                  {item.label}
+                </button>
+                <div className="invisible absolute left-0 top-full z-50 pt-2 min-w-[12rem] rounded-md border border-white/10 bg-navy p-2 opacity-0 shadow-lg transition-opacity group-hover:visible group-hover:opacity-100">
+                  {item.subMenu.map((sub) => (
+                    <Link
+                      key={sub.href}
+                      href={sub.href}
+                      className="block rounded px-3 py-2 text-sky transition-colors hover:bg-white/5 hover:text-white"
+                    >
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Link key={item.href} href={item.href!} className="text-sky transition-colors hover:text-white">
+                {item.label}
+              </Link>
+            )
+          )}
         </nav>
       </div>
     </header>
