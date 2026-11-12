@@ -30,7 +30,7 @@ export async function SiteFooter() {
           {footerNav.map((item) => (
             <Link
               key={item.href}
-              href={item.href}
+              href={item.href!}
               className="transition-colors hover:text-white"
             >
               {item.label}
