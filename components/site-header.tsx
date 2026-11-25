@@ -25,9 +25,18 @@ export function SiteHeader() {
           {mainNav.map((item) =>
             item.subMenu ? (
               <div key={item.label} className="group relative">
-                <button className="flex items-center gap-1 text-sky transition-colors group-hover:text-white">
-                  {item.label}
-                </button>
+                {item.href ? (
+                  <Link
+                    href={item.href}
+                    className="flex items-center gap-1 text-sky transition-colors group-hover:text-white"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button className="flex items-center gap-1 text-sky transition-colors group-hover:text-white">
+                    {item.label}
+                  </button>
+                )}
                 <div className="invisible absolute left-0 top-full z-50 pt-2 min-w-[12rem] rounded-md border border-white/10 bg-navy p-2 opacity-0 shadow-lg transition-opacity group-hover:visible group-hover:opacity-100">
                   {item.subMenu.map((sub) => (
                     <Link

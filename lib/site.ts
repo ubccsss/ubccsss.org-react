@@ -37,19 +37,19 @@ export const mainNav: NavItem[] = [
     subMenu: [
       {
         label: "The Cube",
-        href: "/cube"
+        href: "/services/cube"
       },
       {
         label: "Course Reviews",
-        href: "/course-reviews"
+        href: "/services/course-reviews"
       },
       {
         label: "Locker Rentals",
-        href: "/locker-rentals"
+        href: "/services/locker-rentals"
       },
       {
         label: "Tutoring",
-        href: "/tutoring"
+        href: "/services/tutoring"
       }
     ], 
     href: "/services" 
@@ -59,13 +59,14 @@ export const mainNav: NavItem[] = [
     subMenu: [
       {
         label: "Events",
-        href: "/events"
+        href: "/get-involved/events"
       },
       {
         label: "Volunteer",
-        href: "/volunteer"
+        href: "/get-involved/volunteer"
       }
-    ]
+    ],
+    href: "/get-involved"
   },
   { label: "Technical Career Fair", href: "/tcf" },
   { label: "Research Conference", href: "/conference" },
